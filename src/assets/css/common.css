@@ -1,0 +1,19 @@
+html,
+body,
+#app {
+  height: 100%;
+  background: #090a0a;
+}
+
+html,
+body,
+ul,
+li {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
