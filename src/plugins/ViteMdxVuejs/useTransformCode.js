@@ -129,8 +129,9 @@ function splicingNavHandle() {
   )
   const after = newString.slice(endIndex)
 
+  const additionalStr = `import { ElScrollbar } from "element-plus";`
   // 开始拼接字符串
-  newString = `${front}${navPageHtml}<div class = "rightContent">${center}</div>${after}`
+  newString = `${additionalStr}${front}${navPageHtml}<div class = "rightContent">${center}</div>${after}`
   return newString
 }
 
