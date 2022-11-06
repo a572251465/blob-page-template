@@ -1,15 +1,20 @@
 <script>
 import Header from './components/Header/index.vue'
 import { onMounted, ref, defineComponent } from 'vue'
-import A1 from './components/mdx/A1.mdx'
 import { cacheStore, settingStore } from './store/index.js'
+// <!-- import-components -->
+// import A1 from './components/mdx/A1.mdx'
+// import A2 from './components/mdx/A2.mdx'
+// import A3 from './components/mdx/A3.mdx'
 
 export default defineComponent({
   // <!-- components-replace -->
-  components: {
-    A1,
-    Header
-  },
+  // components: {
+  //   A1,
+  //   A2,
+  //   A3,
+  //   Header
+  // },
   setup() {
     // 表示一级分类list
     const classifyList = ref([])
@@ -25,14 +30,18 @@ export default defineComponent({
     const scrollbarRef = ref()
 
     // 表示导航点击事情
-    const navClickHandle = (type, value) => {
+    const navClickHandle = (type, item) => {
       if (type === 'navValue') {
-        oneActive.value = value
+        oneActive.value = item.value
       } else {
-        twoActive.value = value
+        twoActive.value = item.value
+        document.title = item.label
       }
 
-      settingStore(type, value)
+      settingStore(type, item.value)
+
+      // 如果是点击一级的话 设置二级
+      if (type === 'navValue') articleTitleList.value = item.children
     }
 
     // 表示缩略图点击
@@ -40,95 +49,45 @@ export default defineComponent({
       const target = event.target
       const { dataset = {} } = target
       // 判断指定的字段是否存在
-      if (
-        !Reflect.has(dataset, "referId") ||
-        !Reflect.has(dataset, "referLabel")
-      )
-        return
+      if (!Reflect.has(dataset, 'referId') || !Reflect.has(dataset, 'referLabel')) return
 
       // 开始获取dom元素
       try {
         const { referId, referLabel } = dataset
-        const dom = document.querySelector(
-          `${referLabel}[data-id="${referId}"]`
-        )
+        const dom = document.querySelector(`${referLabel}[data-id="${referId}"]`)
         scrollbarRef.value.setScrollTop(dom.offsetTop)
       } catch (error) {
         console.error(error)
       }
     }
 
+    // 表示初期设置
+    const initSetting = () => {
+      if (!Array.isArray(mockData) || mockData.length === 0) return
+
+      if (!oneActive.value || !twoActive.value) {
+        navClickHandle('navValue', mockData[0])
+
+        const child = mockData[0].children
+        if (Array.isArray(child) && child.length > 0) navClickHandle('articleValue', child[0])
+        return
+      }
+
+      const item = mockData.find((item) => item.value === oneActive.value)
+      navClickHandle('navValue', item)
+    }
+
+    // --------------- 模拟数据 ---------------------
+    // <!-- mock-data -->
+
     onMounted(() => {
       oneActive.value = cacheStore.navValue
       twoActive.value = cacheStore.articleValue
+
+      // 表示笔记初期化数据
+      classifyList.value = mockData
+      initSetting()
     })
-
-    // --------------- 模拟数据 ---------------------
-    classifyList.value = [
-      {
-        label: 'Css',
-        value: '0'
-      },
-      {
-        label: 'Java',
-        value: '1'
-      },
-      {
-        label: 'JavaScript',
-        value: '2'
-      },
-      {
-        label: 'Linux',
-        value: '3'
-      },
-      {
-        label: 'React',
-        value: '4'
-      },
-      {
-        label: 'TypeScript',
-        value: '5'
-      }
-    ]
-
-    articleTitleList.value = [
-      {
-        label: 'Java飞升之路之docker 数据卷',
-        value: 'A1'
-      },
-      {
-        label: 'Java飞升之路之docker-compose安装',
-        value: 'A1'
-      },
-      {
-        label: 'Java飞升之路之docker 数据卷',
-        value: 'A1'
-      },
-      {
-        label: 'Java飞升之路之DockerFile',
-        value: 'A1'
-      },
-      {
-        label: 'Java飞升之路之docker本质',
-        value: 'A1'
-      },
-      {
-        label: 'Java飞升之路之docker介绍以及安装',
-        value: 'A1'
-      },
-      {
-        label: 'Java飞升之路之docker相关的网络知识',
-        value: 'A1'
-      },
-      {
-        label: 'Java飞升之路之docker中namespace',
-        value: 'A1'
-      },
-      {
-        label: 'Java飞升之路之Mysq安装',
-        value: 'A1'
-      }
-    ]
 
     return {
       classifyList,
@@ -154,7 +113,7 @@ export default defineComponent({
         <li
           v-for="item of classifyList"
           :key="item.value"
-          @click="navClickHandle('navValue', item.value)"
+          @click="navClickHandle('navValue', item)"
           :class="oneActive === item.value ? 'oneActive' : ''"
         >
           {{ item.label }}
@@ -167,10 +126,10 @@ export default defineComponent({
           <li
             v-for="(item, key) of articleTitleList"
             :key="key"
-            @click="navClickHandle('articleValue', item.value)"
+            @click="navClickHandle('articleValue', item)"
             :class="twoActive === item.value ? 'twoActive' : ''"
           >
-            <span><em v-show="item.value === twoActive">☑</em></span>
+            <span><em v-show="item.value === twoActive">√</em></span>
             <span>{{ item.label }}</span>
           </li>
         </el-scrollbar>
@@ -179,7 +138,7 @@ export default defineComponent({
       <!--   三级渲染markdown 部分   -->
       <div class="part03">
         <el-scrollbar ref="scrollbarRef">
-          <div class="markdown-body" v-if="twoActive" @click="thumbnailHandle">
+          <div class="markdown-body" @click="thumbnailHandle">
             <component :is="twoActive"></component>
           </div>
         </el-scrollbar>
@@ -247,7 +206,7 @@ export default defineComponent({
       & > span:nth-child(1) {
         display: inline-block;
         width: 20px;
-        color: blue;
+        color: yellow;
       }
 
       &:first-of-type {
@@ -269,7 +228,7 @@ export default defineComponent({
     position: relative;
 
     .markdown-body {
-      padding: 0 40px;
+      padding: 0 60px;
     }
 
     .nav-wrap {

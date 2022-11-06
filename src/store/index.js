@@ -5,8 +5,8 @@
 import { reactive } from 'vue'
 
 export const cacheStore = reactive({
-  navValue: -1,
-  articleValue: -1,
+  navValue: "",
+  articleValue: "",
   mdValue: ''
 })
 
@@ -19,8 +19,8 @@ export const settingStore = (type, value) => {
 }
 
 const initStore = () => {
-  const navValue = localStorage.getItem("navValue") || -1
-  const articleValue = localStorage.getItem("articleValue") || -1
+  const navValue = localStorage.getItem("navValue") || ""
+  const articleValue = localStorage.getItem("articleValue") || ""
   const mdValue = localStorage.getItem('mdValue') || ''
 
   cacheStore.navValue = navValue
