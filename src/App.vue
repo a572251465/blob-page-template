@@ -172,8 +172,8 @@ export default defineComponent({
         margin-top: 30px;
       }
 
-      height: 40px;
-      line-height: 40px;
+      height: 35px;
+      line-height: 35px;
       color: #fff;
       font-weight: bold;
       font-style: italic;
@@ -203,7 +203,7 @@ export default defineComponent({
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
-      padding: 7px 3px;
+      padding: 4px 3px;
       cursor: pointer;
       font-weight: bold;
       border-right: 4px solid transparent;
