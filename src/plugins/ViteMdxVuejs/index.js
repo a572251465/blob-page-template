@@ -11,14 +11,6 @@ export default (options = {}) => {
 
       if (filter(id)) {
         const compiler = createCompiler()
-
-        // 转换指定的字符
-        const chars = [['<br>', '</br>']]
-        chars.forEach(char => {
-          const reg = new RegExp(char[0], 'gi')
-          code = code.replace(reg, char[1])
-        })
-
         const result = compiler.processSync(code)
 
         // 用来筛选文件名称
