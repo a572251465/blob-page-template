@@ -15,13 +15,13 @@ export const settingStore = (type, value) => {
   if (!needFields.includes(type)) throw TypeError(`type must is ${needFields}, but type is ${type}`)
   cacheStore[type] = value
 
-  localStorage.setItem(type, value)
+  sessionStorage.setItem(type, value)
 }
 
 const initStore = () => {
-  const navValue = localStorage.getItem("navValue") || ""
-  const articleValue = localStorage.getItem("articleValue") || ""
-  const mdValue = localStorage.getItem('mdValue') || ''
+  const navValue = sessionStorage.getItem("navValue") || ""
+  const articleValue = sessionStorage.getItem("articleValue") || ""
+  const mdValue = sessionStorage.getItem('mdValue') || ''
 
   cacheStore.navValue = navValue
   cacheStore.articleValue = articleValue

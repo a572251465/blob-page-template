@@ -70,6 +70,12 @@ export default defineComponent({
       }
 
       const item = mockData.find((item) => item.value === oneActive.value)
+      if (!item) {
+        oneActive.value = "";
+        twoActive.value = "";
+        initSetting()
+        return;
+      }
       navClickHandle('navValue', item)
     }
 
