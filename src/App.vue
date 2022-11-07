@@ -1,11 +1,7 @@
 <script>
 import Header from './components/Header/index.vue'
-import { onMounted, ref, defineComponent } from 'vue'
+import { onMounted, ref, defineComponent, defineAsyncComponent } from 'vue'
 import { cacheStore, settingStore } from './store/index.js'
-// <!-- import-components -->
-// import A1 from './components/mdx/A1.mdx'
-// import A2 from './components/mdx/A2.mdx'
-// import A3 from './components/mdx/A3.mdx'
 
 export default defineComponent({
   // <!-- components-replace -->
@@ -96,7 +92,6 @@ export default defineComponent({
       twoActive,
       scrollbarRef,
       navClickHandle,
-      A1,
       Header,
       thumbnailHandle
     }
@@ -234,7 +229,7 @@ export default defineComponent({
     .nav-wrap {
       position: absolute;
       right: 0;
-      width: 150px;
+      width: 200px;
       overflow: hidden;
       white-space: nowrap;
       font-size: 12px;
