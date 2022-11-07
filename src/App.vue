@@ -37,7 +37,12 @@ export default defineComponent({
       settingStore(type, item.value)
 
       // 如果是点击一级的话 设置二级
-      if (type === 'navValue') articleTitleList.value = item.children
+      if (type === 'navValue') {
+        articleTitleList.value = item.children
+
+        // 默认选中第一个
+        if (articleTitleList.value.length > 0) navClickHandle('articleValue', articleTitleList.value[0])
+      }
     }
 
     // 表示缩略图点击
@@ -71,10 +76,10 @@ export default defineComponent({
 
       const item = mockData.find((item) => item.value === oneActive.value)
       if (!item) {
-        oneActive.value = "";
-        twoActive.value = "";
+        oneActive.value = ''
+        twoActive.value = ''
         initSetting()
-        return;
+        return
       }
       navClickHandle('navValue', item)
     }
