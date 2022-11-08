@@ -116,14 +116,16 @@ export default defineComponent({
     <div class="body">
       <!--  一级导航部分    -->
       <ul class="part01">
-        <li
-          v-for="item of classifyList"
-          :key="item.value"
-          @click="navClickHandle('navValue', item)"
-          :class="oneActive === item.value ? 'oneActive' : ''"
-        >
-          {{ item.label }}
-        </li>
+        <el-scrollbar>
+          <li
+            v-for="item of classifyList"
+            :key="item.value"
+            @click="navClickHandle('navValue', item)"
+            :class="oneActive === item.value ? 'oneActive' : ''"
+          >
+            {{ item.label }}
+          </li>
+        </el-scrollbar>
       </ul>
 
       <!--   二级导航部分   -->
@@ -136,7 +138,7 @@ export default defineComponent({
             :class="twoActive === item.value ? 'twoActive' : ''"
           >
             <span><em v-show="item.value === twoActive">√</em></span>
-            <span>{{ item.label }}</span>
+            <span :title="item.label">{{ item.label }}</span>
           </li>
         </el-scrollbar>
       </ul>
@@ -230,7 +232,7 @@ export default defineComponent({
     }
   }
   .part03 {
-    width: calc(100% - 370px);
+    width: calc(100% - 430px);
     position: relative;
 
     .markdown-body {
@@ -240,7 +242,7 @@ export default defineComponent({
     .nav-wrap {
       position: absolute;
       right: 0;
-      width: 200px;
+      width: 230px;
       overflow: hidden;
       white-space: nowrap;
       font-size: 12px;
